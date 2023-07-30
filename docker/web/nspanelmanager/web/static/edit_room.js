@@ -6,6 +6,8 @@ function add_new_light_to_available_lights_list(light, type) {
     } else if (light.label.startsWith("switch.")) {
       // icon = "mdi-toggle-switch-off";
       icon = "mdi-lightning-bolt";
+    } else if (light.label.startsWith("input_boolean.")) {
+      icon = "mdi-toggle-switch";
     } else {
       icon = "mdi-help";
     }

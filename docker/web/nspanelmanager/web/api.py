@@ -151,7 +151,7 @@ def get_all_available_light_entities(request):
             home_assistant_response = requests.get(home_assistant_api_address, headers=home_assistant_request_headers, timeout=5)
             if home_assistant_response.status_code == 200:
                 for entity in home_assistant_response.json():
-                    if (entity["entity_id"].startswith("light.") or entity["entity_id"].startswith("switch.")):
+                    if (entity["entity_id"].startswith("light.") or entity["entity_id"].startswith("switch.") or entity["entity_id"].startswith("input_boolean.")):
                         return_json["home_assistant_lights"].append({
                             "label": entity["entity_id"],
                             "items": []

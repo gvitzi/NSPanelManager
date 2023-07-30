@@ -52,7 +52,7 @@ def on_message(ws, message):
             ON_CONNECT_HANDLER()
     elif json_msg["type"] == "event" and json_msg["event"]["event_type"] == "state_changed":
         entity_id = json_msg["event"]["data"]["entity_id"]
-        if entity_id.startswith("light.") or entity_id.startswith("switch."):
+        if entity_id.startswith("light.") or entity_id.startswith("switch.") or entity_id.startswith("input_boolean."):
             send_entity_update(json_msg)
     elif json_msg["type"] == "result" and not json_msg["success"]:
         logging.error("Failed result: ")
@@ -223,17 +223,16 @@ def set_entity_brightness(home_assistant_name: str, light_level: int, color_temp
             }
             if color_temp > 0:
                 msg["service_data"]["kelvin"] = color_temp
-        elif home_assistant_name.startswith("switch."):
+        elif home_assistant_name.startswith("switch.") or home_assistant_name.startswith("input_boolean."):
             msg = {
                 "id": next_id,
                 "type": "call_service",
-                "domain": "switch",
+                "domain": "homeassistant",
                 "service": "turn_on" if light_level > 0 else "turn_off",
                 "target": {
                     "entity_id": home_assistant_name
                 }
             }
-
         if msg:
             send_message(json.dumps(msg))
             return True
